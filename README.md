@@ -1,7 +1,5 @@
 # ScreenFade
 
-[Screen Fade Library in Code Plugins - UE Marketplace](https://www.unrealengine.com/marketplace/product/screen-fade-library)
-
 ## Blueprint Nodes
 
 ![ScreenFade_Nodes](https://github.com/suramaru517/ScreenFade/assets/50897830/4ca3e356-4013-4d6e-b807-4b58ac5d737b)
@@ -68,9 +66,8 @@ void AMyActor::OnFadeInFinished()
 	UE_LOG(LogTemp, Log, TEXT("Fade in finished"));
 
 	UScreenFadeFunctionLibrary::FadeOut(this, 1.0f, FLinearColor::Black, FScreenFadeDelegate::CreateLambda([]()
-		{
-			UE_LOG(LogTemp, Log, TEXT("Fade out finished"));
-		}
-	));
+	{
+		UE_LOG(LogTemp, Log, TEXT("Fade out finished"));
+	}));
 }
 ```

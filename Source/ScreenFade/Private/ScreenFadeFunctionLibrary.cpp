@@ -3,6 +3,7 @@
 #include "ScreenFadeFunctionLibrary.h"
 #include "ScreenFadeSubsystem.h"
 #include "Engine/Engine.h"
+#include "Engine/GameInstance.h"
 
 void UScreenFadeFunctionLibrary::Fade(const UObject* WorldContextObject, const FScreenFadeParams& FadeParams, const APlayerController* OwningPlayer, const int32 ZOrder)
 {

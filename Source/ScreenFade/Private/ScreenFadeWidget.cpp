@@ -2,7 +2,8 @@
 
 #include "ScreenFadeWidget.h"
 #include "AudioDevice.h"
-#include "Launch/Resources/Version.h"
+#include "Engine/GameViewportClient.h"
+#include "Misc/EngineVersionComparison.h"
 
 void SScreenFadeWidget::Construct(const FArguments& InArgs)
 {
@@ -95,7 +96,7 @@ void SScreenFadeWidget::SetPrimaryVolume(const float Volume)
 	{
 		if (FAudioDevice* AudioDevice = World->GetAudioDeviceRaw())
 		{
-#if ENGINE_MAJOR_VERSION < 5 || ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION < 1
+#if UE_VERSION_OLDER_THAN(5, 1, 0)
 			AudioDevice->SetTransientMasterVolume(Volume);
 #else
 			AudioDevice->SetTransientPrimaryVolume(Volume);

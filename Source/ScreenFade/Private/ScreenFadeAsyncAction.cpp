@@ -2,6 +2,7 @@
 
 #include "ScreenFadeAsyncAction.h"
 #include "ScreenFadeFunctionLibrary.h"
+#include "GameFramework/PlayerController.h"
 
 void UScreenFadeAsyncAction::Activate()
 {
