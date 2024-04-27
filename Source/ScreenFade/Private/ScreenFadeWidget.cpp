@@ -1,8 +1,10 @@
-// Copyright 2023 Metaseven. All Rights Reserved.
+// Copyright 2023-2024 Metaseven. All Rights Reserved.
 
 #include "ScreenFadeWidget.h"
 #include "AudioDevice.h"
+#include "Engine/Engine.h"
 #include "Engine/GameViewportClient.h"
+#include "Engine/World.h"
 #include "Misc/EngineVersionComparison.h"
 
 void SScreenFadeWidget::Construct(const FArguments& InArgs)
