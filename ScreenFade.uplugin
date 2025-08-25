@@ -10,7 +10,7 @@
 	"DocsURL": "https://github.com/suramaru517/ScreenFade",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/c3edf2a04e0b4ec5a3940a4c35268972",
 	"SupportURL": "https://discord.gg/YGPzKM24XK",
-	"EngineVersion": "",
+	"EngineVersion": "5.6.0",
 	"CanContainContent": false,
 	"Installed": true,
 	"Modules": [
@@ -19,7 +19,9 @@
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",
 			"PlatformAllowList": [
-				"Win64"
+				"Win64",
+				"Mac",
+				"Linux"
 			]
 		}
 	]

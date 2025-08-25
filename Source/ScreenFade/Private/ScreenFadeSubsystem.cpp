@@ -6,6 +6,28 @@
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "Engine/Engine.h"
+
+void UScreenFadeSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+{
+	Super::Initialize(Collection);
+
+	if (GEngine)
+	{
+		GEngine->OnWorldDestroyed().AddUObject(this, &UScreenFadeSubsystem::OnWorldDestroyed);
+	}
+}
+
+void UScreenFadeSubsystem::Deinitialize()
+{
+	if (GEngine)
+	{
+		GEngine->OnWorldDestroyed().RemoveAll(this);
+	}
+
+	FadeWidgetsForID.Empty();
+	Super::Deinitialize();
+}
 
 void UScreenFadeSubsystem::AddFadeWidget(const FScreenFadeParams& FadeParams, const APlayerController* OwningPlayer, const int32 ZOrder)
 {
@@ -43,12 +65,24 @@ void UScreenFadeSubsystem::AddFadeWidget(const FScreenFadeParams& FadeParams, co
 
 void UScreenFadeSubsystem::RemoveFadeWidget(const APlayerController* OwningPlayer, const int32 ControllerID)
 {
-	TSharedRef<SWidget> FadeWidget = FadeWidgetsForID[ControllerID].Pin().ToSharedRef();
+	if (!FadeWidgetsForID.Contains(ControllerID))
+	{
+		return;
+	}
+
+	TSharedPtr<SWidget> FadeWidgetPtr = FadeWidgetsForID[ControllerID].Pin();
 	FadeWidgetsForID.Remove(ControllerID);
+
+	if (!FadeWidgetPtr.IsValid())
+	{
+		return;
+	}
+
+	TSharedRef<SWidget> FadeWidget = FadeWidgetPtr.ToSharedRef();
 
 	if (UGameViewportClient* GameViewport = GetGameViewport())
 	{
-		if (OwningPlayer)
+		if (OwningPlayer && IsValid(OwningPlayer) && OwningPlayer->GetLocalPlayer())
 		{
 			GameViewport->RemoveViewportWidgetForPlayer(OwningPlayer->GetLocalPlayer(), FadeWidget);
 		}
@@ -111,4 +145,21 @@ APlayerController* UScreenFadeSubsystem::GetPlayerControllerFromID(const int32 C
 	}
 
 	return nullptr;
+}
+void UScreenFadeSubsystem::OnWorldDestroyed(UWorld* World)
+{
+	TArray<int32> ControllerIDsToRemove;
+	
+	for (auto& Pair : FadeWidgetsForID)
+	{
+		if (!Pair.Value.IsValid())
+		{
+			ControllerIDsToRemove.Add(Pair.Key);
+		}
+	}
+	
+	for (int32 ControllerID : ControllerIDsToRemove)
+	{
+		FadeWidgetsForID.Remove(ControllerID);
+	}
 }
