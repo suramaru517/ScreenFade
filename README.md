@@ -1,5 +1,9 @@
 # ScreenFade
 
+## This Fork Includes:
+- **Level Load Crash Fix**: Prevents crashes when level loading interrupts fade transitions
+- **Enhanced Safety**: Added null pointer validation and world validity checks
+
 ## Blueprint Nodes
 
 ![ScreenFade_Nodes](https://github.com/suramaru517/ScreenFade/assets/50897830/4ca3e356-4013-4d6e-b807-4b58ac5d737b)

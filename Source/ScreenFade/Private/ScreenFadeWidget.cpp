@@ -96,13 +96,16 @@ void SScreenFadeWidget::SetPrimaryVolume(const float Volume)
 {
 	if (UWorld* World = GetWorld())
 	{
-		if (FAudioDevice* AudioDevice = World->GetAudioDeviceRaw())
+		if (IsValid(World) && !World->IsUnreachable())
 		{
+			if (FAudioDevice* AudioDevice = World->GetAudioDeviceRaw())
+			{
 #if UE_VERSION_OLDER_THAN(5, 1, 0)
-			AudioDevice->SetTransientMasterVolume(Volume);
+				AudioDevice->SetTransientMasterVolume(Volume);
 #else
-			AudioDevice->SetTransientPrimaryVolume(Volume);
+				AudioDevice->SetTransientPrimaryVolume(Volume);
 #endif
+			}
 		}
 	}
 }
