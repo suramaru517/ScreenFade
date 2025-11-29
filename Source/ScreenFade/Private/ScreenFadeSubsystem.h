@@ -18,6 +18,8 @@ class UScreenFadeSubsystem : public UGameInstanceSubsystem
 
 public:
 	void AddFadeWidget(const FScreenFadeParams& FadeParams, const APlayerController* OwningPlayer = nullptr, const int32 ZOrder = 100);
+	void RemoveFadeWidget(const APlayerController* OwningPlayer);
+	bool FadeWidgetExists(const APlayerController* OwningPlayer) const;
 
 private:
 	void RemoveFadeWidget(const APlayerController* OwningPlayer, const int32 ControllerId);

@@ -39,6 +39,16 @@ static void FadeOut(
 	const APlayerController* OwningPlayer = nullptr,
 	const int32 ZOrder = 100
 );
+
+static void ClearFade(
+	const UObject* WorldContextObject,
+	const APlayerController* OwningPlayer = nullptr
+);
+
+static bool IsFading(
+	const UObject* WorldContextObject,
+	const APlayerController* OwningPlayer = nullptr
+);
 ```
 
 ### Example:
@@ -64,11 +74,9 @@ void AMyActor::BeginPlay()
 
 void AMyActor::OnFadeInFinished()
 {
-	UE_LOG(LogTemp, Log, TEXT("Fade in finished"));
-
 	UScreenFadeFunctionLibrary::FadeOut(this, 1.0f, FLinearColor::Black, FScreenFadeDelegate::CreateWeakLambda(this, []()
 	{
-		UE_LOG(LogTemp, Log, TEXT("Fade out finished"));
+		UE_LOG(LogTemp, Log, TEXT("Finished"));
 	}));
 }
 ```

@@ -71,6 +71,26 @@ public:
 		const int32 ZOrder = 100
 	);
 
+	/**
+	 * Clear the screen fade.
+	 * @param OwningPlayer - The player to clear the fade widget from.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "ScreenFade", meta = (WorldContext = "WorldContextObject", AdvancedDisplay = 1))
+	static void ClearFade(
+		const UObject* WorldContextObject,
+		const APlayerController* OwningPlayer = nullptr
+	);
+
+	/**
+	 * Return true if the screen is fading.
+	 * @param OwningPlayer - The player to check if the fade widget exists.
+	 */
+	UFUNCTION(BlueprintPure, BlueprintCosmetic, Category = "ScreenFade", meta = (WorldContext = "WorldContextObject", AdvancedDisplay = 1))
+	static bool IsFading(
+		const UObject* WorldContextObject,
+		const APlayerController* OwningPlayer = nullptr
+	);
+
 private:
 	/**
 	 * Fade the screen from a color to transparent.

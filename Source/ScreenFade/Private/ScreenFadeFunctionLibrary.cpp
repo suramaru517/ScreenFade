@@ -38,6 +38,46 @@ void UScreenFadeFunctionLibrary::FadeOut(const UObject* WorldContextObject, cons
 	Fade(WorldContextObject, FadeParams, OwningPlayer, ZOrder);
 }
 
+void UScreenFadeFunctionLibrary::ClearFade(const UObject* WorldContextObject, const APlayerController* OwningPlayer)
+{
+	if (!GEngine)
+	{
+		return;
+	}
+
+	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		if (const UGameInstance* GameInstance = World->GetGameInstance())
+		{
+			if (UScreenFadeSubsystem* Subsystem = GameInstance->GetSubsystem<UScreenFadeSubsystem>())
+			{
+				Subsystem->RemoveFadeWidget(OwningPlayer);
+			}
+		}
+	}
+}
+
+bool UScreenFadeFunctionLibrary::IsFading(const UObject* WorldContextObject, const APlayerController* OwningPlayer)
+{
+	if (!GEngine)
+	{
+		return false;
+	}
+
+	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		if (const UGameInstance* GameInstance = World->GetGameInstance())
+		{
+			if (const UScreenFadeSubsystem* Subsystem = GameInstance->GetSubsystem<UScreenFadeSubsystem>())
+			{
+				return Subsystem->FadeWidgetExists(OwningPlayer);
+			}
+		}
+	}
+
+	return false;
+}
+
 void UScreenFadeFunctionLibrary::K2_FadeIn(const UObject* WorldContextObject, const float Time, const FLinearColor FromColor, const FScreenFadeDynamicDelegate& OnFinished, const bool bFadeAudio, const bool bFadeWhenPaused, const APlayerController* OwningPlayer, const int32 ZOrder)
 {
 	const FScreenFadeParams FadeParams(Time, FromColor, FLinearColor::Transparent, OnFinished, bFadeAudio, bFadeWhenPaused);

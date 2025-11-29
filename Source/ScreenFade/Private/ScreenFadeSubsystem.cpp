@@ -44,6 +44,16 @@ void UScreenFadeSubsystem::AddFadeWidget(const FScreenFadeParams& FadeParams, co
 	FadeWidget->StartFade();
 }
 
+void UScreenFadeSubsystem::RemoveFadeWidget(const APlayerController* OwningPlayer)
+{
+	RemoveFadeWidget(OwningPlayer, GetPlayerControllerId(OwningPlayer));
+}
+
+bool UScreenFadeSubsystem::FadeWidgetExists(const APlayerController* OwningPlayer) const
+{
+	return FadeWidgetByControllerId.Contains(GetPlayerControllerId(OwningPlayer));
+}
+
 void UScreenFadeSubsystem::RemoveFadeWidget(const APlayerController* OwningPlayer, const int32 ControllerId)
 {
 	TWeakPtr<SWidget> WeakFadeWidget;
