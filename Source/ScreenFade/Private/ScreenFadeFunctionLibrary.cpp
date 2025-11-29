@@ -9,12 +9,19 @@
 
 void UScreenFadeFunctionLibrary::Fade(const UObject* WorldContextObject, const FScreenFadeParams& FadeParams, const APlayerController* OwningPlayer, const int32 ZOrder)
 {
-	if (GEngine)
+	if (!GEngine)
 	{
-		if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+		return;
+	}
+
+	if (const UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		if (const UGameInstance* GameInstance = World->GetGameInstance())
 		{
-			UScreenFadeSubsystem* Subsystem = World->GetGameInstance()->GetSubsystem<UScreenFadeSubsystem>();
-			Subsystem->AddFadeWidget(FadeParams, OwningPlayer, ZOrder);
+			if (UScreenFadeSubsystem* Subsystem = GameInstance->GetSubsystem<UScreenFadeSubsystem>())
+			{
+				Subsystem->AddFadeWidget(FadeParams, OwningPlayer, ZOrder);
+			}
 		}
 	}
 }

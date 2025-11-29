@@ -46,18 +46,25 @@ void UScreenFadeSubsystem::AddFadeWidget(const FScreenFadeParams& FadeParams, co
 
 void UScreenFadeSubsystem::RemoveFadeWidget(const APlayerController* OwningPlayer, const int32 ControllerId)
 {
-	TSharedRef<SWidget> FadeWidget = FadeWidgetByControllerId[ControllerId].Pin().ToSharedRef();
-	FadeWidgetByControllerId.Remove(ControllerId);
+	TWeakPtr<SWidget> WeakFadeWidget;
 
-	if (UGameViewportClient* GameViewport = GetGameViewport())
+	if (!FadeWidgetByControllerId.RemoveAndCopyValue(ControllerId, WeakFadeWidget))
 	{
-		if (OwningPlayer)
+		return;
+	}
+
+	if (const TSharedPtr<SWidget> FadeWidget = WeakFadeWidget.Pin())
+	{
+		if (UGameViewportClient* GameViewport = GetGameViewport())
 		{
-			GameViewport->RemoveViewportWidgetForPlayer(OwningPlayer->GetLocalPlayer(), FadeWidget);
-		}
-		else
-		{
-			GameViewport->RemoveViewportWidgetContent(FadeWidget);
+			if (OwningPlayer)
+			{
+				GameViewport->RemoveViewportWidgetForPlayer(OwningPlayer->GetLocalPlayer(), FadeWidget.ToSharedRef());
+			}
+			else
+			{
+				GameViewport->RemoveViewportWidgetContent(FadeWidget.ToSharedRef());
+			}
 		}
 	}
 }

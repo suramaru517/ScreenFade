@@ -3,6 +3,7 @@
 #include "ScreenFadeWidget.h"
 
 #include "AudioDevice.h"
+#include "AudioDeviceManager.h"
 #include "Engine/Engine.h"
 #include "Engine/GameViewportClient.h"
 #include "Engine/World.h"
@@ -97,7 +98,7 @@ void SScreenFadeWidget::SetAudioVolume(const float Volume)
 {
 	if (UWorld* World = GetWorld())
 	{
-		if (FAudioDevice* AudioDevice = World->GetAudioDeviceRaw())
+		if (FAudioDeviceHandle AudioDevice = World->GetAudioDevice())
 		{
 #if UE_VERSION_OLDER_THAN(5, 1, 0)
 			AudioDevice->SetTransientMasterVolume(Volume);
