@@ -1,14 +1,10 @@
 # ScreenFade
 
-## Blueprint Nodes
+## Blueprint
 
-![ScreenFade_Nodes](https://github.com/suramaru517/ScreenFade/assets/50897830/4ca3e356-4013-4d6e-b807-4b58ac5d737b)
+<img width="3840" height="2160" alt="ScreenFade" src="https://github.com/user-attachments/assets/e354e7ec-3c65-45e5-938a-93413e4489c1" />
 
-### Example:
-
-![ScreenFade_Example](https://github.com/suramaru517/ScreenFade/assets/50897830/2847003b-df47-4853-a367-e08f53c99378)
-
-## C++ Functions
+## C++
 
 ```cpp
 static void Fade(
