@@ -6,6 +6,8 @@
 #include "Widgets/Images/SImage.h"
 #include "ScreenFadeTypes.h"
 
+class UWorld;
+
 class SScreenFadeWidget : public SImage
 {
 public:
@@ -27,10 +29,10 @@ private:
 
 	UWorld* GetWorld() const;
 	bool IsGamePaused() const;
-	void SetPrimaryVolume(const float Volume);
+	void SetAudioVolume(const float Volume);
 
 	FScreenFadeParams FadeParams;
 	FScreenFadeDelegate OnFadeFinished;
 
-	float TimeRemaining;
+	float TimeRemaining = 0.0f;
 };

@@ -6,6 +6,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "ScreenFadeSubsystem.generated.h"
 
+class APlayerController;
 class SWidget;
 class UGameViewportClient;
 struct FScreenFadeParams;
@@ -19,12 +20,12 @@ public:
 	void AddFadeWidget(const FScreenFadeParams& FadeParams, const APlayerController* OwningPlayer = nullptr, const int32 ZOrder = 100);
 
 private:
-	void RemoveFadeWidget(const APlayerController* OwningPlayer, const int32 ControllerID);
-	void RemoveFadeWidget(const int32 ControllerID);
+	void RemoveFadeWidget(const APlayerController* OwningPlayer, const int32 ControllerId);
+	void RemoveFadeWidget(const int32 ControllerId);
 
 	UGameViewportClient* GetGameViewport() const;
-	int32 GetPlayerControllerID(const APlayerController* PlayerController) const;
-	APlayerController* GetPlayerControllerFromID(const int32 ControllerID) const;
+	int32 GetPlayerControllerId(const APlayerController* PlayerController) const;
+	APlayerController* GetPlayerControllerFromId(const int32 ControllerId) const;
 
-	TMap<int32, TWeakPtr<SWidget>> FadeWidgetsForID;
+	TMap<int32, TWeakPtr<SWidget>> FadeWidgetByControllerId;
 };

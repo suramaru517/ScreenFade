@@ -1,29 +1,32 @@
 // Copyright 2023-2024 Metaseven. All Rights Reserved.
 
 #include "ScreenFadeSubsystem.h"
-#include "ScreenFadeWidget.h"
+
 #include "Engine/GameViewportClient.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "ScreenFadeTypes.h"
+#include "ScreenFadeWidget.h"
+#include "Widgets/SWidget.h"
 
 void UScreenFadeSubsystem::AddFadeWidget(const FScreenFadeParams& FadeParams, const APlayerController* OwningPlayer, const int32 ZOrder)
 {
-	const int32 ControllerID = GetPlayerControllerID(OwningPlayer);
+	const int32 ControllerId = GetPlayerControllerId(OwningPlayer);
 
-	if (FadeWidgetsForID.Contains(ControllerID))
+	if (FadeWidgetByControllerId.Contains(ControllerId))
 	{
-		RemoveFadeWidget(OwningPlayer, ControllerID);
+		RemoveFadeWidget(OwningPlayer, ControllerId);
 	}
 
 	FScreenFadeDelegate OnFadeFinished;
 
 	if (FadeParams.ToColor.A <= 0.0f)
 	{
-		OnFadeFinished.BindUObject(this, &UScreenFadeSubsystem::RemoveFadeWidget, ControllerID);
+		OnFadeFinished.BindUObject(this, &UScreenFadeSubsystem::RemoveFadeWidget, ControllerId);
 	}
 
-	TSharedRef<SScreenFadeWidget> FadeWidget = SNew(SScreenFadeWidget).FadeParams(FadeParams).OnFadeFinished(OnFadeFinished);
+	const TSharedRef<SScreenFadeWidget> FadeWidget = SNew(SScreenFadeWidget).FadeParams(FadeParams).OnFadeFinished(OnFadeFinished);
 
 	if (UGameViewportClient* GameViewport = GetGameViewport())
 	{
@@ -37,14 +40,14 @@ void UScreenFadeSubsystem::AddFadeWidget(const FScreenFadeParams& FadeParams, co
 		}
 	}
 
-	FadeWidgetsForID.Emplace(ControllerID, FadeWidget);
+	FadeWidgetByControllerId.Emplace(ControllerId, FadeWidget);
 	FadeWidget->StartFade();
 }
 
-void UScreenFadeSubsystem::RemoveFadeWidget(const APlayerController* OwningPlayer, const int32 ControllerID)
+void UScreenFadeSubsystem::RemoveFadeWidget(const APlayerController* OwningPlayer, const int32 ControllerId)
 {
-	TSharedRef<SWidget> FadeWidget = FadeWidgetsForID[ControllerID].Pin().ToSharedRef();
-	FadeWidgetsForID.Remove(ControllerID);
+	TSharedRef<SWidget> FadeWidget = FadeWidgetByControllerId[ControllerId].Pin().ToSharedRef();
+	FadeWidgetByControllerId.Remove(ControllerId);
 
 	if (UGameViewportClient* GameViewport = GetGameViewport())
 	{
@@ -59,9 +62,9 @@ void UScreenFadeSubsystem::RemoveFadeWidget(const APlayerController* OwningPlaye
 	}
 }
 
-void UScreenFadeSubsystem::RemoveFadeWidget(const int32 ControllerID)
+void UScreenFadeSubsystem::RemoveFadeWidget(const int32 ControllerId)
 {
-	RemoveFadeWidget(GetPlayerControllerFromID(ControllerID), ControllerID);
+	RemoveFadeWidget(GetPlayerControllerFromId(ControllerId), ControllerId);
 }
 
 UGameViewportClient* UScreenFadeSubsystem::GetGameViewport() const
@@ -77,7 +80,7 @@ UGameViewportClient* UScreenFadeSubsystem::GetGameViewport() const
 	return nullptr;
 }
 
-int32 UScreenFadeSubsystem::GetPlayerControllerID(const APlayerController* PlayerController) const
+int32 UScreenFadeSubsystem::GetPlayerControllerId(const APlayerController* PlayerController) const
 {
 	if (PlayerController)
 	{
@@ -90,20 +93,20 @@ int32 UScreenFadeSubsystem::GetPlayerControllerID(const APlayerController* Playe
 	return 0x80000000;
 }
 
-APlayerController* UScreenFadeSubsystem::GetPlayerControllerFromID(const int32 ControllerID) const
+APlayerController* UScreenFadeSubsystem::GetPlayerControllerFromId(const int32 ControllerId) const
 {
-	if (ControllerID == 0x80000000)
+	if (ControllerId == 0x80000000)
 	{
 		return nullptr;
 	}
 
 	if (const UWorld* World = GetWorld())
 	{
-		for (FConstPlayerControllerIterator Iterator = World->GetPlayerControllerIterator(); Iterator; ++Iterator)
+		for (FConstPlayerControllerIterator It = World->GetPlayerControllerIterator(); It; ++It)
 		{
-			APlayerController* PlayerController = Iterator->Get();
+			APlayerController* PlayerController = It->Get();
 
-			if (GetPlayerControllerID(PlayerController) == ControllerID)
+			if (GetPlayerControllerId(PlayerController) == ControllerId)
 			{
 				return PlayerController;
 			}

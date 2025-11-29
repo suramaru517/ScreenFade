@@ -1,9 +1,9 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
+	"VersionName": "1.1",
 	"FriendlyName": "ScreenFade",
-	"Description": "Plugin that makes it easy to implement screen fade in Blueprints and C++.",
+	"Description": "Make it easy to implement screen fade in Blueprints and C++.",
 	"Category": "Other",
 	"CreatedBy": "Metaseven",
 	"CreatedByURL": "https://twitter.com/suramaru517",

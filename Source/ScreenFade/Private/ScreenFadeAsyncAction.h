@@ -7,6 +7,8 @@
 #include "ScreenFadeTypes.h"
 #include "ScreenFadeAsyncAction.generated.h"
 
+class APlayerController;
+
 UCLASS()
 class UScreenFadeAsyncAction : public UBlueprintAsyncActionBase
 {
@@ -17,20 +19,21 @@ public:
 
 private:
 	/**
-	 * Does a screen fade to/from a color.
+	 * Fade the screen from a color to another.
 	 * @param FadeParams - Parameters to set fade.
 	 * @param OwningPlayer - The player to add the fade widget to.
 	 * @param ZOrder - The Z-order index for this fade widget. Larger values will cause the widget to appear on top of widgets with lower values.
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "ScreenFade", meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject", AdvancedDisplay = 2))
+	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "ScreenFade", meta = (DisplayName = "Fade (Latent)", BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject", AdvancedDisplay = 2))
 	static UScreenFadeAsyncAction* AsyncFade(
 		UObject* WorldContextObject,
 		const FScreenFadeParams& FadeParams,
-		APlayerController* OwningPlayer = nullptr,
-		const int32 ZOrder = 100);
+		const APlayerController* OwningPlayer = nullptr,
+		const int32 ZOrder = 100
+	);
 
 	/**
-	 * Does a screen fade from a color to transparent.
+	 * Fade the screen from a color to transparent.
 	 * @param Time - How long the fade should take, in seconds.
 	 * @param FromColor - Color to fade from.
 	 * @param bFadeAudio - True to fade audio volume along with the alpha of the color.
@@ -38,18 +41,19 @@ private:
 	 * @param OwningPlayer - The player to add the fade widget to.
 	 * @param ZOrder - The Z-order index for this fade widget. Larger values will cause the widget to appear on top of widgets with lower values.
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "ScreenFade", meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject", AdvancedDisplay = 3))
+	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "ScreenFade", meta = (DisplayName = "Fade In (Latent)", BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject", AdvancedDisplay = 3))
 	static UScreenFadeAsyncAction* AsyncFadeIn(
 		UObject* WorldContextObject,
 		const float Time = 1.0f,
 		const FLinearColor FromColor = FLinearColor::Black,
 		const bool bFadeAudio = true,
 		const bool bFadeWhenPaused = true,
-		APlayerController* OwningPlayer = nullptr,
-		const int32 ZOrder = 100);
+		const APlayerController* OwningPlayer = nullptr,
+		const int32 ZOrder = 100
+	);
 
 	/**
-	 * Does a screen fade from transparent to a color.
+	 * Fade the screen from transparent to a color.
 	 * @param Time - How long the fade should take, in seconds.
 	 * @param ToColor - Color to fade to.
 	 * @param bFadeAudio - True to fade audio volume along with the alpha of the color.
@@ -57,22 +61,23 @@ private:
 	 * @param OwningPlayer - The player to add the fade widget to.
 	 * @param ZOrder - The Z-order index for this fade widget. Larger values will cause the widget to appear on top of widgets with lower values.
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "ScreenFade", meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject", AdvancedDisplay = 3))
+	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "ScreenFade", meta = (DisplayName = "Fade Out (Latent)", BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject", AdvancedDisplay = 3))
 	static UScreenFadeAsyncAction* AsyncFadeOut(
 		UObject* WorldContextObject,
 		const float Time = 1.0f,
 		const FLinearColor ToColor = FLinearColor::Black,
 		const bool bFadeAudio = true,
 		const bool bFadeWhenPaused = true,
-		APlayerController* OwningPlayer = nullptr,
-		const int32 ZOrder = 100);
+		const APlayerController* OwningPlayer = nullptr,
+		const int32 ZOrder = 100
+	);
 
 	void OnFadeFinished();
 
-	TWeakObjectPtr<UObject> WorldContextObject;
+	TWeakObjectPtr<const UObject> WorldContextObject;
 	FScreenFadeParams FadeParams;
-	TWeakObjectPtr<APlayerController> OwningPlayer;
-	int32 ZOrder;
+	TWeakObjectPtr<const APlayerController> OwningPlayer;
+	int32 ZOrder = 0;
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FFinishedDelegate);
 

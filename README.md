@@ -10,14 +10,13 @@
 
 ## C++ Functions
 
-ScreenFadeFunctionLibrary.h
-
 ```cpp
 static void Fade(
 	const UObject* WorldContextObject,
 	const FScreenFadeParams& FadeParams,
 	const APlayerController* OwningPlayer = nullptr,
-	const int32 ZOrder = 100);
+	const int32 ZOrder = 100
+);
 
 static void FadeIn(
 	const UObject* WorldContextObject,
@@ -27,7 +26,8 @@ static void FadeIn(
 	const bool bFadeAudio = true,
 	const bool bFadeWhenPaused = true,
 	const APlayerController* OwningPlayer = nullptr,
-	const int32 ZOrder = 100);
+	const int32 ZOrder = 100
+);
 
 static void FadeOut(
 	const UObject* WorldContextObject,
@@ -37,7 +37,8 @@ static void FadeOut(
 	const bool bFadeAudio = true,
 	const bool bFadeWhenPaused = true,
 	const APlayerController* OwningPlayer = nullptr,
-	const int32 ZOrder = 100);
+	const int32 ZOrder = 100
+);
 ```
 
 ### Example:
@@ -45,7 +46,7 @@ static void FadeOut(
 MyProject.Build.cs
 
 ```cs
-PublicDependencyModuleNames.AddRange(new string[] { "ScreenFade" });
+PublicDependencyModuleNames.Add("ScreenFade");
 ```
 
 MyActor.cpp
@@ -65,7 +66,7 @@ void AMyActor::OnFadeInFinished()
 {
 	UE_LOG(LogTemp, Log, TEXT("Fade in finished"));
 
-	UScreenFadeFunctionLibrary::FadeOut(this, 1.0f, FLinearColor::Black, FScreenFadeDelegate::CreateLambda([]()
+	UScreenFadeFunctionLibrary::FadeOut(this, 1.0f, FLinearColor::Black, FScreenFadeDelegate::CreateWeakLambda(this, []()
 	{
 		UE_LOG(LogTemp, Log, TEXT("Fade out finished"));
 	}));

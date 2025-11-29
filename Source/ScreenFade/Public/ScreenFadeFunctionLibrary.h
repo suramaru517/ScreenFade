@@ -7,6 +7,8 @@
 #include "ScreenFadeTypes.h"
 #include "ScreenFadeFunctionLibrary.generated.h"
 
+class APlayerController;
+
 UCLASS()
 class SCREENFADE_API UScreenFadeFunctionLibrary : public UBlueprintFunctionLibrary
 {
@@ -14,7 +16,7 @@ class SCREENFADE_API UScreenFadeFunctionLibrary : public UBlueprintFunctionLibra
 
 public:
 	/**
-	 * Does a screen fade to/from a color.
+	 * Fade the screen from a color to another.
 	 * @param FadeParams - Parameters to set fade.
 	 * @param OwningPlayer - The player to add the fade widget to.
 	 * @param ZOrder - The Z-order index for this fade widget. Larger values will cause the widget to appear on top of widgets with lower values.
@@ -24,10 +26,11 @@ public:
 		const UObject* WorldContextObject,
 		const FScreenFadeParams& FadeParams,
 		const APlayerController* OwningPlayer = nullptr,
-		const int32 ZOrder = 100);
+		const int32 ZOrder = 100
+	);
 
 	/**
-	 * Does a screen fade from a color to transparent.
+	 * Fade the screen from a color to transparent.
 	 * @param Time - How long the fade should take, in seconds.
 	 * @param FromColor - Color to fade from.
 	 * @param OnFinished - Delegate executed when the fade is finished.
@@ -44,10 +47,11 @@ public:
 		const bool bFadeAudio = true,
 		const bool bFadeWhenPaused = true,
 		const APlayerController* OwningPlayer = nullptr,
-		const int32 ZOrder = 100);
+		const int32 ZOrder = 100
+	);
 
 	/**
-	 * Does a screen fade from transparent to a color.
+	 * Fade the screen from transparent to a color.
 	 * @param Time - How long the fade should take, in seconds.
 	 * @param ToColor - Color to fade to.
 	 * @param OnFinished - Delegate executed when the fade is finished.
@@ -64,11 +68,12 @@ public:
 		const bool bFadeAudio = true,
 		const bool bFadeWhenPaused = true,
 		const APlayerController* OwningPlayer = nullptr,
-		const int32 ZOrder = 100);
+		const int32 ZOrder = 100
+	);
 
 private:
 	/**
-	 * Does a screen fade from a color to transparent.
+	 * Fade the screen from a color to transparent.
 	 * @param Time - How long the fade should take, in seconds.
 	 * @param FromColor - Color to fade from.
 	 * @param OnFinished - Event called when the fade is finished.
@@ -86,10 +91,11 @@ private:
 		const bool bFadeAudio = true,
 		const bool bFadeWhenPaused = true,
 		const APlayerController* OwningPlayer = nullptr,
-		const int32 ZOrder = 100);
+		const int32 ZOrder = 100
+	);
 
 	/**
-	 * Does a screen fade from transparent to a color.
+	 * Fade the screen from transparent to a color.
 	 * @param Time - How long the fade should take, in seconds.
 	 * @param ToColor - Color to fade to.
 	 * @param OnFinished - Event called when the fade is finished.
@@ -107,5 +113,6 @@ private:
 		const bool bFadeAudio = true,
 		const bool bFadeWhenPaused = true,
 		const APlayerController* OwningPlayer = nullptr,
-		const int32 ZOrder = 100);
+		const int32 ZOrder = 100
+	);
 };

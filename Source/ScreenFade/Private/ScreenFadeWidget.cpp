@@ -1,6 +1,7 @@
 // Copyright 2023-2024 Metaseven. All Rights Reserved.
 
 #include "ScreenFadeWidget.h"
+
 #include "AudioDevice.h"
 #include "Engine/Engine.h"
 #include "Engine/GameViewportClient.h"
@@ -65,7 +66,7 @@ void SScreenFadeWidget::ApplyFade(const FLinearColor& NextColor)
 
 	if (FadeParams.bFadeAudio)
 	{
-		SetPrimaryVolume(1.0f - NextColor.A);
+		SetAudioVolume(1.0f - NextColor.A);
 	}
 }
 
@@ -92,7 +93,7 @@ bool SScreenFadeWidget::IsGamePaused() const
 	return false;
 }
 
-void SScreenFadeWidget::SetPrimaryVolume(const float Volume)
+void SScreenFadeWidget::SetAudioVolume(const float Volume)
 {
 	if (UWorld* World = GetWorld())
 	{
